@@ -10,7 +10,7 @@ app.use(bodyParser.json({limit: '1mb'}));
 //app.use(cors({credentials: true}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://192.168.48.13:8080");
+    res.header("Access-Control-Allow-Origin", "http://localhost:8080");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header("Access-Control-Allow-Credentials","true");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
