@@ -2,6 +2,7 @@ var Encrypt = require('./crypto.js');
 var express = require('express');
 var http = require('http');
 var crypto = require('crypto');
+var reqhttp = require("request")
 //var bodyParser = require("body-parser");
 var app = express();
 var dir = "/v1"
@@ -354,7 +355,7 @@ app.get(dir + '/top/album', function(request, response) {
 		"csrf_token": ""
 	}
 	var cookie = request.get('Cookie') ? request.get('Cookie') : (request.query.cookie ? request.query.cookie : '');
-	createWebAPIRequest('/weapi/discovery/new/albums/area', data, cookie, response);
+	createWebAPIRequest('/weapi/album/new', data, cookie, response);
 });
 //mv 排行,type ALL, ZH,EA,KR,JP
 app.get(dir + '/top/mv', function(request, response) {
@@ -574,16 +575,28 @@ app.get(dir + '/mv/simi', function(request, response) {
 });
 //mv播放地址
 app.get(dir + '/mv/url', function(request, response) {
-	var id = parseInt(request.query.id);
-	var br = parseInt(request.query.br);
-	var data = {
-		"ids": [id],
-		id: id,
-		"br": br,
-		"csrf_token": ""
-	};
-	var cookie = request.get('Cookie') ? request.get('Cookie') : (request.query.cookie ? request.query.cookie : '');
-	createWebAPIRequest('/weapi/song/enhance/play/mv/url', data, cookie, response)
+//	var id = parseInt(request.query.id);
+//	var br = parseInt(request.query.br);
+//	var data = {
+//		"ids": [id],
+//		id: id,
+//		"br": br,
+//		"csrf_token": ""
+//	};
+//	var cookie = request.get('Cookie') ? request.get('Cookie') : (request.query.cookie ? request.query.cookie : '');
+//	createWebAPIRequest('/weapi/song/enhance/play/mv/url', data, cookie, response)
+var url = request.query.url
+  var headers = {
+    "Referer": "http://music.163.com/",
+    "Cookie": "appver=1.5.0.75771;",
+    'Content-Type': 'video/mp4',
+    'Location': url
+  }
+  var options = {
+    header: headers,
+    url: url
+  }
+  reqhttp(options).pipe(response)
 });
 //单曲详情
 app.get(dir + '/music/detail', function(request, response) {
